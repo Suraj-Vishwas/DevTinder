@@ -7,6 +7,7 @@ const { connectDB } = require("./config/database")
 
 
 app.use(express.json());
+
 app.post("/signup", async (req, res) => {
     console.log(req.body)
     
@@ -59,6 +60,34 @@ app.get("/feed", async (req, res) => {
     }
 })
 
+
+// delete a user from the database
+
+app.delete("/user", async (req, res) => {
+    const userId = req.body.userId;
+    try{
+        await User.findOneAndDelete({_id: userId});
+        // await User.findOneAndDelete(userId);
+        res.send(`User ${userId} deleted Successfully`);
+    }catch(err) {
+        res.status(404).send({error: err.message});
+    }
+})
+
+// update data of user
+
+app.patch("/user", async (req, res) => {
+    const userId = req.body.userId;
+    const data = req.body;
+    try{
+        const user = await User.findByIdAndUpdate({_id: userId}, data, {returnDocument: "after"});
+        res.send(`User updated Successfully`);
+        console.log(user);
+        
+    }catch(err) {
+        res.status(404).send({message:"somthing went wrong", error: err.message});
+    }
+})
 
 connectDB()
     .then(() => {
