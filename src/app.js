@@ -60,7 +60,6 @@ app.get("/feed", async (req, res) => {
     }
 })
 
-
 // delete a user from the database
 
 app.delete("/user", async (req, res) => {
@@ -82,10 +81,10 @@ app.patch("/user", async (req, res) => {
     try{
         const user = await User.findByIdAndUpdate({_id: userId}, data, {returnDocument: "after"});
         res.send(`User updated Successfully`);
-        console.log(user);
+        // console.log(user);
         
     }catch(err) {
-        res.status(404).send({message:"somthing went wrong", error: err.message});
+        res.status(404).send("Updation Error " + err.message);
     }
 })
 
